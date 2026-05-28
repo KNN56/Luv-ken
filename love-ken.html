@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รักเคน 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffd6e7 0%, #ffb3d1 30%, #e8c5f0 60%, #c9d6ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Floating background text */
+  .bg-words {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .bg-word {
+    position: absolute;
+    font-size: 13px;
+    color: rgba(200, 100, 150, 0.55);
+    font-weight: 600;
+    white-space: nowrap;
+    animation: floatWord 6s ease-in-out infinite;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.35);
+    padding: 4px 12px;
+    border: 1px solid rgba(220, 120, 160, 0.25);
+  }
+
+  @keyframes floatWord {
+    0%, 100% { transform: translateY(0px) rotate(-1deg); opacity: 0.7; }
+    50% { transform: translateY(-8px) rotate(1deg); opacity: 1; }
+  }
+
+  /* Main card */
+  .card {
+    background: rgba(255,255,255,0.92);
+    border-radius: 28px;
+    padding: 40px 36px;
+    text-align: center;
+    max-width: 360px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(220, 100, 150, 0.25), 0 4px 20px rgba(0,0,0,0.08);
+    position: relative;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    animation: cardFloat 4s ease-in-out infinite;
+  }
+
+  @keyframes cardFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .heart-icon {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 12px;
+    animation: heartBeat 1.5s ease-in-out infinite;
+  }
+
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.15); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.1); }
+  }
+
+  .card h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #c0395e;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .card .sub {
+    font-size: 14px;
+    color: #d4729a;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  /* Mascot area */
+  .mascot {
+    font-size: 60px;
+    margin: 10px 0 24px;
+    display: block;
+    animation: mascotWiggle 3s ease-in-out infinite;
+  }
+
+  @keyframes mascotWiggle {
+    0%, 100% { transform: rotate(-5deg) scale(1); }
+    50% { transform: rotate(5deg) scale(1.05); }
+  }
+
+  /* Buttons */
+  .btn-yes {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #e85d8a, #d63571);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer;
+    margin-bottom: 12px;
+    box-shadow: 0 6px 20px rgba(214, 53, 113, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-yes:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 28px rgba(214, 53, 113, 0.55);
+  }
+
+  .btn-no {
+    display: inline-block;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #6c7fd8, #5565c7);
+    color: white;
+    border: 2px solid transparent;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 5px 16px rgba(85, 101, 199, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s, border-color 0.3s;
+    position: fixed;
+    z-index: 20;
+  }
+
+  .btn-no.outlined {
+    background: rgba(255,255,255,0.85);
+    color: #c0395e;
+    border: 2px solid #c0395e;
+    box-shadow: 0 4px 14px rgba(192, 57, 94, 0.2);
+  }
+
+  .btn-no:hover {
+    transform: scale(1.04);
+  }
+
+  /* Popup overlay */
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .popup-overlay.show {
+    display: flex;
+  }
+
+  .popup-box {
+    background: white;
+    border-radius: 24px;
+    padding: 36px 32px;
+    text-align: center;
+    max-width: 320px;
+    width: 88%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .popup-emoji {
+    font-size: 50px;
+    display: block;
+    margin-bottom: 12px;
+    animation: spin 0.5s ease-out;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(-10deg) scale(0.8); }
+    to { transform: rotate(0deg) scale(1); }
+  }
+
+  .popup-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #c0395e;
+    margin-bottom: 8px;
+  }
+
+  .popup-msg {
+    font-size: 15px;
+    color: #888;
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+
+  .btn-next {
+    padding: 12px 32px;
+    background: linear-gradient(135deg, #e85d8a, #d63571);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 5px 16px rgba(214, 53, 113, 0.4);
+    transition: transform 0.2s;
+  }
+
+  .btn-next:hover { transform: scale(1.05); }
+
+  /* No button wrapper (for positioning in viewport) */
+  #no-btn-wrapper {
+    position: fixed;
+    z-index: 20;
+  }
+</style>
+</head>
+<body>
+
+<!-- Background floating words -->
+<div class="bg-words" id="bgWords"></div>
+
+<!-- Main Card -->
+<div class="card" id="mainCard">
+  <span class="heart-icon">💗</span>
+  <h1 id="cardTitle">รักเคนมากๆ ได้ไหม</h1>
+  <p class="sub" id="cardSub">ตอบตรงๆ เลยนะ 🥺</p>
+  <span class="mascot" id="mascot">🐰</span>
+  <button class="btn-yes" onclick="onYes()">💕 รักเคนมากๆ 💕</button>
+</div>
+
+<!-- No button (outside card, floating) -->
+<div id="no-btn-wrapper">
+  <button class="btn-no" id="noBtn" onclick="onNo()">ไม่รักเคนแล้ว 🙁</button>
+</div>
+
+<!-- Popup overlay -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-box">
+    <span class="popup-emoji" id="popupEmoji">💝</span>
+    <div class="popup-title" id="popupTitle">เคนรักลูกไม้เหมือนกัน!</div>
+    <div class="popup-msg" id="popupMsg">เคนรักลูกมากๆ เลยนะ 🥰</div>
+    <button class="btn-next" id="popupNextBtn" onclick="onNext()">ต่อไป →</button>
+  </div>
+</div>
+
+<script>
+  // ---- State ----
+  let noClickCount = 0;
+  let yesClickCount = 0;
+  const MAX_NO_MOVES = 3; // move 3 times, 4th stays
+
+  // Popup sequence
+  const popupSequence = [
+    { emoji: '💝', title: 'เคนรักลูกไม้เหมือนกัน!', msg: 'รู้มั้ยเคนรักลูกไม้มากกกกแค่ไหน 🥰' },
+    { emoji: '🌸', title: 'อยู่ด้วยกันไปนานๆ เลย', msg: 'อยู่เคียงข้างกันไปนานๆ นะ ไม่ไปไหนเลย 💕' },
+    { emoji: '🍑', title: 'รักอ้วนที่สุดเลยยยยยย', msg: 'รักอ้วนมากที่สุดในโลกทั้งใบเลยยยย 💗💗💗' },
+  ];
+  let popupStep = 0;
+
+  // Background sad words (for no-press mood)
+  const sadWords = [
+    'อย่าทิ้งเคนนะ 😢','เคนน้อยใจมากเลย','ทำไมล่ะ 🥺','เคนทำอะไรผิดหรอ?',
+    'อย่าเป็นแบบนี้เลย','เคนรักลูกนะ','ใจร้ายมาก','กลับมาหาเคนด้วย',
+    'เคนเสียใจมาก 😭','ไม่รักจริงๆ หรอ?','เคนคิดถึงลูกตลอด','อย่าไปไหนนะ',
+    'เคนรอลูกอยู่','แค่รักเคนได้ไหม 🙏','เคนหัวใจสลาย','ทำไมต้องเป็นแบบนี้',
+    'เคนน้อยใจจริงๆ 😿','ลูกไม่แคร์เคนเลย','เคนร้องไห้อยู่นะ','อย่าทำให้เคนเจ็บปวด',
+    'เคนรักลูกที่สุดเลย','กลับมาหาเคนเร็วๆ','เคนรอลูกอยู่นะ 💔','ทำไมล่ะ ทำไม',
+    'เคนเสียใจ 😢','หัวใจเคนแตก 💔','อย่าทิ้งกันเลยนะ','เคนคนเดียวโดดเดี่ยว',
+  ];
+
+  // ---- Init no button position ----
+  function initNoBtn() {
+    const btn = document.getElementById('noBtn');
+    // Place below card initially
+    const card = document.getElementById('mainCard');
+    const rect = card.getBoundingClientRect();
+    document.getElementById('no-btn-wrapper').style.left = (rect.left + rect.width/2 - 70) + 'px';
+    document.getElementById('no-btn-wrapper').style.top = (rect.bottom + 16) + 'px';
+  }
+
+  window.addEventListener('load', initNoBtn);
+  window.addEventListener('resize', initNoBtn);
+
+  // ---- No button logic ----
+  function onNo() {
+    noClickCount++;
+
+    if (noClickCount <= MAX_NO_MOVES) {
+      if (noClickCount < MAX_NO_MOVES) {
+        // Move button to random position (away from center)
+        moveNoBtn();
+      } else {
+        // 4th click: stay at original position, change text + style
+        resetNoBtnToOriginal();
+        const nb = document.getElementById('noBtn');
+        nb.textContent = '😱 แน่ใจว่าไม่กลับ?';
+        nb.classList.add('outlined');
+      }
+      // Add more sad words to background
+      addSadWords(noClickCount * 5);
+    } else {
+      // After 4th click onward (pressing "ไม่รักจริงหรอ")
+      addSadWords(8);
+    }
+  }
+
+  function moveNoBtn() {
+    const btn = document.getElementById('noBtn');
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const bw = btn.offsetWidth + 20;
+    const bh = btn.offsetHeight + 20;
+
+    // Avoid center area (where card is)
+    let x, y;
+    do {
+      x = Math.random() * (w - bw);
+      y = Math.random() * (h - bh);
+    } while (x > w*0.2 && x < w*0.7 && y > h*0.2 && y < h*0.75);
+
+    const wrapper = document.getElementById('no-btn-wrapper');
+    wrapper.style.transition = 'left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    wrapper.style.left = x + 'px';
+    wrapper.style.top = y + 'px';
+  }
+
+  function resetNoBtnToOriginal() {
+    const card = document.getElementById('mainCard');
+    const rect = card.getBoundingClientRect();
+    const wrapper = document.getElementById('no-btn-wrapper');
+    wrapper.style.transition = 'left 0.4s ease, top 0.4s ease';
+    wrapper.style.left = (rect.left + rect.width/2 - 70) + 'px';
+    wrapper.style.top = (rect.bottom + 16) + 'px';
+  }
+
+  function addSadWords(count) {
+    const bg = document.getElementById('bgWords');
+    for (let i = 0; i < count; i++) {
+      const span = document.createElement('div');
+      span.className = 'bg-word';
+      span.textContent = sadWords[Math.floor(Math.random() * sadWords.length)];
+      span.style.left = Math.random() * 90 + '%';
+      span.style.top = Math.random() * 90 + '%';
+      span.style.animationDelay = (Math.random() * 3) + 's';
+      span.style.animationDuration = (4 + Math.random() * 4) + 's';
+      bg.appendChild(span);
+    }
+  }
+
+  // ---- Yes button logic ----
+  function onYes() {
+    yesClickCount = 0;
+    popupStep = 0;
+    showPopup();
+  }
+
+  function showPopup() {
+    const data = popupSequence[popupStep];
+    document.getElementById('popupEmoji').textContent = data.emoji;
+    document.getElementById('popupTitle').textContent = data.title;
+    document.getElementById('popupMsg').textContent = data.msg;
+
+    const nextBtn = document.getElementById('popupNextBtn');
+    if (popupStep >= popupSequence.length - 1) {
+      nextBtn.textContent = '🥰 จบแล้ว!';
+      nextBtn.onclick = closePopup;
+    } else {
+      nextBtn.textContent = 'ต่อไป →';
+      nextBtn.onclick = onNext;
+    }
+
+    document.getElementById('popup').classList.add('show');
+  }
+
+  function onNext() {
+    popupStep++;
+    if (popupStep >= popupSequence.length) {
+      closePopup();
+      return;
+    }
+    // Re-animate
+    const box = document.querySelector('.popup-box');
+    box.style.animation = 'none';
+    box.offsetHeight; // reflow
+    box.style.animation = 'popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    showPopup();
+  }
+
+  function closePopup() {
+    document.getElementById('popup').classList.remove('show');
+    // Celebrate!
+    addHearts();
+  }
+
+  function addHearts() {
+    const hearts = ['💕','💗','💖','🌸','✨','💝','🥰'];
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => {
+        const h = document.createElement('div');
+        h.style.cssText = `
+          position:fixed;
+          left:${Math.random()*100}%;
+          top:${100 + Math.random()*10}%;
+          font-size:${20+Math.random()*20}px;
+          z-index:200;
+          animation: riseUp 2s ease-out forwards;
+          pointer-events:none;
+        `;
+        h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 2100);
+      }, i * 80);
+    }
+  }
+
+  // Add riseUp keyframe dynamically
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes riseUp {
+      from { transform: translateY(0) scale(1); opacity: 1; }
+      to { transform: translateY(-120vh) scale(0.5); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+</body>
+</html>
